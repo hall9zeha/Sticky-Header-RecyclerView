@@ -8,3 +8,25 @@ package com.hall9zeha.stickyheader.common.entities
  ***/
 
 data class Person(var name:String, var lastName:String)
+fun getDummyDataSource():List<Person>{
+    return listOf(
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Martha","N"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"),
+        Person("Barry","Zea"))
+}

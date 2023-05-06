@@ -1,12 +1,10 @@
 package com.hall9zeha.stickyheader.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.hall9zeha.stickyheader.common.entities.Person
-import com.hall9zeha.stickyheader.databinding.StickyHeaderItemBinding
+import com.hall9zeha.stickyheader.databinding.PersonDetailListItemBinding
 
 /**
  * Project Sticky Header
@@ -14,35 +12,33 @@ import com.hall9zeha.stickyheader.databinding.StickyHeaderItemBinding
  * Copyright (c) Barry Zea H. All rights reserved.
  *
  **/
-class MyAdapter: RecyclerView.Adapter<MyAdapter.ViewHolder>() {
-    private  var headerList:List<Char> = arrayListOf()
-    var personData:Map<Char, List<Person>> = emptyMap()
-        set(value){
-            field = value
-            headerList = personData.keys.toList()
-            notifyDataSetChanged()
-        }
+class MyAdapter(private val onClick:(entity:Person)->Unit): RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+    private  var headerList:MutableList<Person> = arrayListOf()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-       val itemBinding = StickyHeaderItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+       val itemBinding = PersonDetailListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position >= 0 && position < headerList.size) {
             holder.onBind(headerList[position])
-        }
-
     }
-
+    fun addAll(entityList:List<Person>){
+        entityList.forEach { entity->
+            //habilitar cuando no estemos usando una lista hardcode
+            //if(!headerList.contains(entity)){
+                headerList.add(entity)
+                notifyItemInserted(headerList.size-1)
+            //}
+        }
+    }
     override fun getItemCount()= headerList.size
-    fun getHeaderForCurrentPosition(position:Int) = if(position in headerList.indices){headerList[position]} else ""
-    inner class ViewHolder(private val itemBinding: StickyHeaderItemBinding):RecyclerView.ViewHolder(itemBinding.root) {
-        fun onBind(header:Char)= with(itemBinding){
-            tvHeader.text = header.toString()
-            personData[header]?.let { persons->
-                personGroupDetail.persons=persons
-                
-            }
+
+    inner class ViewHolder(private val itemBinding: PersonDetailListItemBinding):RecyclerView.ViewHolder(itemBinding.root) {
+        fun onBind(person:Person)= with(itemBinding){
+            tvName.text = person.name
+            tvLastName.text=person.lastName
+            root.setOnClickListener { onClick(person) }
         }
     }
 }
